@@ -55,7 +55,7 @@ int main(int argc, char* argv[])
 	glViewport(0, 0, width, height);
 
 	//Put the color you want here for the background
-	glClearColor(0.0f, 0.8f, 0.2f, 0.0f);
+	glClearColor(0.8f, 0.0f, 0.0f, 0.0f);
 
 	
 
