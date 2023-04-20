@@ -55,20 +55,26 @@ int main(int argc, char* argv[])
 	glViewport(0, 0, width, height);
 
 	//Put the color you want here for the background
-	glClearColor(0.8f, 0.0f, 0.0f, 0.0f);
+	glClearColor(0.0f, 0.5f, 0.0f, 0.0f);
 
-	
+
 
 
 
 	float vertices[] =
 	{
-	 -1.0f, -1.0f, 0.0f,
-	 1.0f, 1.0f, 0.0f,
-	 -1.0f,  1.0f, 0.0f
-
+	 0.0f, 0.0f, 0.0f, 1.f, 0.5f, 0.2f,
+	 -2.0f, 2.0f, 0.0f, 1.0f, 1.0f, 1.0f,
+	 -2.0f,  0.0f, 0.0f, 1.f, 0.5f, 0.2f,
+	 -2.0f,  -1.0f, 0.0f, 1.f, 0.5f, 0.2f,
+	 0.0f, -2.5f, 0.0f,0.0f, 0.0f, 0.0f,
+	 2.0f, -1.0f, 0.0f, 1.f, 0.5f, 0.2f,
+	 2.0f, 0.0f, 0.0f, 1.f, 0.5f, 0.2f,
+	 2.0f, 2.0f, 0.0f, 1.0f, 1.0f, 1.0f,
 	};
 	
+	
+
 		//Create an ID to be given at object generation
 	unsigned int vbo = 0;
 
@@ -90,8 +96,8 @@ int main(int argc, char* argv[])
 
 	unsigned int vertexShader;
 	vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	
 
+	
 
 	//now that we have a vertex shader, let’s put the code text inside
 	glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
@@ -111,7 +117,10 @@ int main(int argc, char* argv[])
 	unsigned int shaderProgram;
 	shaderProgram = glCreateProgram();
 
+	
 
+
+	
 
 	//now attach shaders to use to the program
 	glAttachShader(shaderProgram, vertexShader);
@@ -135,10 +144,18 @@ int main(int argc, char* argv[])
 	//Finally send the vertices array in the array buffer 
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-	//How do we split informations of the array
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-	//Enable my vertex attrib array number 0 (we only have one attribute of position)
+	
+
+	// Position attribute
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
+
+
+
+	// Color attribute
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
+
 
 
 	//Use depth management
@@ -146,6 +163,9 @@ int main(int argc, char* argv[])
 
 	//0 is our origin, the higher the z, the farther the object
 	glDepthFunc(GL_LESS);
+
+
+
 
 	
 
@@ -171,10 +191,24 @@ int main(int argc, char* argv[])
 
 		//VAO to use next
 		glBindVertexArray(vao);
-
+		// Get the time in seconds 
+		float timeValue = (float)SDL_GetTicks() / 1000;
+		float redColor = (sin(timeValue) / 2.0f) + 0.5f;
+		//int vertexColorLocation = glGetUniformLocation(shaderProgram, "ourColor");
+		//glUseProgram(shaderProgram);
+		//glUniform4f(vertexColorLocation, redColor, 1.0f, 0.0f, 1.0f);
 		//OMG WE FINALLY DRAW ! We use the GL_TRIANGLES primitive type
 		//We draw from vertex 0 and we will be drawing 3 vertices
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		glDrawArrays(GL_TRIANGLE_FAN, 0, 8);
+		
+
+		float yPosition = (cos(timeValue * 1) / 3.0f);
+		int YvertexPosLocation = glGetUniformLocation(shaderProgram, "YOfest");
+		glUniform1f(YvertexPosLocation, yPosition);
+
+		float xPosition = (cos(timeValue * 5) / 3.0f);
+		int XvertexPosLocation = glGetUniformLocation(shaderProgram, "XOfest");
+		glUniform1f(XvertexPosLocation, xPosition);
 
 		SDL_GL_SwapWindow(Window); // Swapbuffer
 	}
