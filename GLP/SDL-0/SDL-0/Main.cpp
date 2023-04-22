@@ -34,8 +34,8 @@ int main(int argc, char* argv[])
 	}
 	///////////SETTING UP SDL/////////////
 	//Create a simple window
-	int width = 900;
-	int height = 900;
+	int width = 500;
+	int height = 500;
 	unsigned int center = SDL_WINDOWPOS_CENTERED;
 	SDL_Window* Window = SDL_CreateWindow("My window", center, center, width, height, SDL_WINDOW_OPENGL);
 	//SDL_WINDOW_OPENGL is a u32 flag !
@@ -191,9 +191,9 @@ int main(int argc, char* argv[])
 
 		//VAO to use next
 		glBindVertexArray(vao);
-		// Get the time in seconds 
+		// Get the time in seconds c
 		float timeValue = (float)SDL_GetTicks() / 1000;
-		float redColor = (sin(timeValue) / 2.0f) + 0.5f;
+		float SomeColor = (sin(timeValue) / 2.0f) + 0.5f;
 		//int vertexColorLocation = glGetUniformLocation(shaderProgram, "ourColor");
 		//glUseProgram(shaderProgram);
 		//glUniform4f(vertexColorLocation, redColor, 1.0f, 0.0f, 1.0f);
@@ -202,11 +202,11 @@ int main(int argc, char* argv[])
 		glDrawArrays(GL_TRIANGLE_FAN, 0, 8);
 		
 
-		float yPosition = (cos(timeValue * 1) / 3.0f);
+		float yPosition = (cos(timeValue * 0.7) / 1.7f);
 		int YvertexPosLocation = glGetUniformLocation(shaderProgram, "YOfest");
 		glUniform1f(YvertexPosLocation, yPosition);
 
-		float xPosition = (cos(timeValue * 5) / 3.0f);
+		float xPosition = (cos(timeValue * 0.6) / 1.0f);
 		int XvertexPosLocation = glGetUniformLocation(shaderProgram, "XOfest");
 		glUniform1f(XvertexPosLocation, xPosition);
 
